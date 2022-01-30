@@ -1,8 +1,11 @@
 from extractor import Extractor
+import consts as c
 
+extractorObj = Extractor(
+    restUrl = c.URL_TO_RETRIEVE,
+    filename=c.FILENAME,
+    maxLineLimit = c.MAX_LINE_LIMIT
+)
 
-res = "https://www.swiggy.com/restaurants/leon-grill-100ft-road-indiranagar-bangalore-32603"
-filen= "menu1"
-
-my_extractor = Extractor()
-my_extractor.extractFrom(res,filen)
+if __name__ == "__main__":
+    extractorObj.extract()
