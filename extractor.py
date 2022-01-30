@@ -1,9 +1,7 @@
 #Minor Project - Swiggy Item List and Prices extractor.
 
-#modules
 import urllib.request
-import os 
-import json
+import os
 
 #installing bs4 if not present
 os.system("pip install bs4")
@@ -11,54 +9,52 @@ from bs4 import BeautifulSoup
 
 class Extractor:
 
-    def extractFrom(self, restraunt_url, filename):
+    def __init__(self, restUrl, filename, maxLineLimit):
 
-        #consts
-        DIR_PATH = __file__.rstrip(os.path.basename(__file__))
-        FILENAME = filename + ".html"
-        FILE_PATH = DIR_PATH+FILENAME
-        URL_TO_RETRIEVE = restraunt_url
-        MAX_LIMIT_OF_LINE = 125
+        self.dirPath = __file__.rstrip(os.path.basename(__file__))
+        self.filename = filename + ".html"
+        self.filePath = self.dirPath+self.filename
+        self.urlToRetrieve = restUrl
+        self.maxLimitOfLine = maxLineLimit
 
+    def extract(self):
 
-        #retrieving html file
-        urllib.request.urlretrieve(URL_TO_RETRIEVE,FILE_PATH)
+        urllib.request.urlretrieve(self.urlToRetrieve,self.filePath) #retrieving html file
 
-        #text file to append into
-        txtFile = open(FILE_PATH.rstrip(".html")+".txt", 'w')
+        self.txtFile = open(self.filePath.rstrip(".html")+".txt", 'w')
+
+        self.totalNumOfItems = 0
 
         #retrieving prices and items
-        totalNumOfItems = 0
-
-        with open(FILE_PATH) as fileParser:
-            soup = BeautifulSoup(fileParser, "html.parser")
+        with open(self.filePath) as fileParser:
+            self.soup = BeautifulSoup(fileParser, "html.parser")
 
 
-            for h2 in soup.findAll("h2", {"class":"M_o7R"}):
+            for h2 in self.soup.findAll("h2", {"class":"M_o7R"}):
 
-                itemNames = []
-                itemPrices = []
+                self.itemNames = []
+                self.itemPrices = []
 
-                txtFile.write(h2.string + "\n")
-                txtFile.write("\n")
+                self.txtFile.write(h2.string + "\n")
+                self.txtFile.write("\n")
 
                 for h3 in h2.parent.findAll("h3", {"class":"styles_itemNameText__3bcKX"}):
-                    itemNames.append(h3.string)
+                    self.itemNames.append(h3.string)
                 
                 for span in h2.parent.findAll("span", {"class":"rupee"}):
-                    itemPrices.append(span.string)
+                    self.itemPrices.append(span.string)
                 
-                numCatItems = len(itemNames)
+                self.numCatItems = len(self.itemNames)
 
-                for i in range(0, numCatItems):
-                    numSpaces = MAX_LIMIT_OF_LINE - (len(itemNames[i]) + len(itemPrices[i]))
-                    toWrite =  itemNames[i] + chr(32) * numSpaces + itemPrices[i] + "\n"
-                    txtFile.write(toWrite)
-                    totalNumOfItems+=1
+                for i in range(0, self.numCatItems):
+                    self.numSpaces = self.maxLimitOfLine - (len(self.itemNames[i]) + len(self.itemPrices[i]))
+                    self.toWrite =  self.itemNames[i] + chr(32) * self.numSpaces + self.itemPrices[i] + "\n"
+                    self.txtFile.write(self.toWrite)
+                    self.totalNumOfItems+=1
 
-                txtFile.write("\n")
+                self.txtFile.write("\n")
 
-        txtFile.write(f"Total Number of Items: {totalNumOfItems}")
-        txtFile.close()
+        self.txtFile.write(f"Total Number of Items: {self.totalNumOfItems}")
+        self.txtFile.close()
 
-        print(f"Made {FILENAME.rstrip('.html')+'.txt'} and appended items into it.")
+        print(f"Made {self.filename.rstrip('.html')+'.txt'} and appended items into it.")
