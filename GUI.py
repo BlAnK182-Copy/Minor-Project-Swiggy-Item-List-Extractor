@@ -1,29 +1,60 @@
 from tkinter import *
+from extractor import Extractor
+import consts as c
 
-root=Tk()
+class GUI:
+    def __init__(self):
 
-MyLabel=Label(root,text="Welcome to PESU Eateries!!")
-MyLabel.pack()
+        self.window=Tk()
 
-MyLabel1=Label(root,text='Enter the name of the restaurant below.')
-MyLabel1.pack()
+        self.greetingWidget=Label(self.window,text="Welcome to PESU Eateries!!")
+        self.greetingWidget.pack()
 
-E=Entry(root,borderwidth='5')
-E.pack()
-restaurant_name=E.get()
+        self.titleWidget=Label(self.window,text='Enter the name of the restaurant below.')
+        self.titleWidget.pack()
 
-def myClick():
-    MyLabel2=Label(root,text="Here's the menu of "+E.get()+". Have a good meal!")
-    MyLabel2.pack()
+        self.UrlEntryWidget=Entry(self.window,borderwidth='5')
+        self.UrlEntryWidget.pack()
+        
+        self.restaurant_name=self.UrlEntryWidget.get()
 
-def clicker(event):
-    myClick()
-    MyLabel3=Label(root,text="Your response has been saved successfully.")
-    MyLabel3.pack()
+        
+        self.submitButton=Button(self.window,text="Submit",padx='50',fg='orange',bg='white',command=self.submitButtonClick)
+        self.UrlEntryWidget.bind('<Return>',self.enterButton)
+        self.submitButton.pack()
 
+        self.window.mainloop()
+            
 
-Button1=Button(root,text="Submit",padx='50',fg='orange',bg='white',command=myClick)
-E.bind('<Return>',clicker)
-Button1.pack()
+    def submitButtonClick(self):
+        # MyLabel2=Label(self.window,text="Here's the menu of "+self.UrlEntryWidget.get()+". Have a good meal!")
+        # MyLabel2.pack()
 
-root.mainloop()
+        self.extractorObj = Extractor(
+            restUrl = self.submission(),
+            filename=c.FILENAME,
+            maxLineLimit = c.MAX_LINE_LIMIT
+        )
+
+        self.extractorObj.extract()
+
+        MyLabel3=Label(self.window,text="Your response has been saved successfully.")
+        MyLabel3.pack()
+
+    def enterButton(self, event):
+        # MyLabel2=Label(self.window,text="Here's the menu of "+self.UrlEntryWidget.get()+". Have a good meal!")
+        # MyLabel2.pack()
+
+        self.extractorObj = Extractor(
+            restUrl = self.submission(),
+            filename=c.FILENAME,
+            maxLineLimit = c.MAX_LINE_LIMIT
+        )
+
+        self.extractorObj.extract()
+
+        MyLabel3=Label(self.window,text="Your response has been saved successfully.")
+        MyLabel3.pack()
+    
+    def submission(self):
+        return self.UrlEntryWidget.get()
