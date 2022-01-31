@@ -1,6 +1,7 @@
 from tkinter import *
 from extractor import Extractor
 import consts as c
+import pushToDB as ptd
 
 class GUI:
     def __init__(self):
@@ -35,34 +36,24 @@ class GUI:
             filename=c.FILENAME,
             maxLineLimit = c.MAX_LINE_LIMIT
         )
+        self.sqlPushObject = ptd.Data_Operations()
 
         extractProcess = self.extractorObj.extract()
 
         if extractProcess == True:
             self.confirmationLabel=Label(self.window,text="Your response has been saved successfully.")
+            self.sqlPushObject.createTable(c.FILENAME)
+            self.sqlPushObject.add_items_to_table(c.FILENAME,c.FILENAME)
+            self.tableConfirmationLabel = Label(self.window, text="Table created and appended into")
+            self.tableConfirmationLabel.pack()
+
         else:
             self.confirmationLabel=Label(self.window,text="There was an error trying to access your url, please enter a valid url.")
         
         self.confirmationLabel.pack()
 
     def enterButton(self, event):
-        # MyLabel2=Label(self.window,text="Here's the menu of "+self.UrlEntryWidget.get()+". Have a good meal!")
-        # MyLabel2.pack()
-
-        self.extractorObj = Extractor(
-            restUrl = self.submission(),
-            filename=c.FILENAME,
-            maxLineLimit = c.MAX_LINE_LIMIT
-        )
-
-        extractProcess = self.extractorObj.extract()
-
-        if extractProcess == True:
-            self.confirmationLabel=Label(self.window,text="Your response has been saved successfully.")
-        else:
-            self.confirmationLabel=Label(self.window,text="There was an error trying to access your url, please enter a valid url.")
-        
-        self.confirmationLabel.pack()
+        self.submitButtonClick()
             
     def submission(self):
         return self.UrlEntryWidget.get()
