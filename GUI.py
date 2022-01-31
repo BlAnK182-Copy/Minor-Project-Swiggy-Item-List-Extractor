@@ -36,10 +36,14 @@ class GUI:
             maxLineLimit = c.MAX_LINE_LIMIT
         )
 
-        self.extractorObj.extract()
+        extractProcess = self.extractorObj.extract()
 
-        MyLabel3=Label(self.window,text="Your response has been saved successfully.")
-        MyLabel3.pack()
+        if extractProcess == True:
+            self.confirmationLabel=Label(self.window,text="Your response has been saved successfully.")
+        else:
+            self.confirmationLabel=Label(self.window,text="There was an error trying to access your url, please enter a valid url.")
+        
+        self.confirmationLabel.pack()
 
     def enterButton(self, event):
         # MyLabel2=Label(self.window,text="Here's the menu of "+self.UrlEntryWidget.get()+". Have a good meal!")
@@ -51,10 +55,14 @@ class GUI:
             maxLineLimit = c.MAX_LINE_LIMIT
         )
 
-        self.extractorObj.extract()
+        extractProcess = self.extractorObj.extract()
 
-        MyLabel3=Label(self.window,text="Your response has been saved successfully.")
-        MyLabel3.pack()
-    
+        if extractProcess == True:
+            self.confirmationLabel=Label(self.window,text="Your response has been saved successfully.")
+        else:
+            self.confirmationLabel=Label(self.window,text="There was an error trying to access your url, please enter a valid url.")
+        
+        self.confirmationLabel.pack()
+            
     def submission(self):
         return self.UrlEntryWidget.get()
