@@ -1,7 +1,7 @@
 # Salutations,
 
 ### Description
-Minor Web-Scraping Project for getting a list of items for restaurants present on the website [Swiggy](https://www.swiggy.com)
+Minor Web-Scraping Project for getting a list of items for restaurants present on the website and popular food ordering service: [Swiggy](https://www.swiggy.com)
 
 ### Usage
 Clone the repo and run main.py
