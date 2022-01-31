@@ -19,42 +19,49 @@ class Extractor:
 
     def extract(self):
 
-        urllib.request.urlretrieve(self.urlToRetrieve,self.filePath) #retrieving html file
+        try:
 
-        self.txtFile = open(self.filePath.rstrip(".html")+".txt", 'w')
+            urllib.request.urlretrieve(self.urlToRetrieve,self.filePath) #retrieving html file
 
-        self.totalNumOfItems = 0
+            self.txtFile = open(self.filePath.rstrip(".html")+".txt", 'w')
 
-        #retrieving prices and items
-        with open(self.filePath) as fileParser:
-            self.soup = BeautifulSoup(fileParser, "html.parser")
+            self.totalNumOfItems = 0
+
+            #retrieving prices and items
+            with open(self.filePath) as fileParser:
+                self.soup = BeautifulSoup(fileParser, "html.parser")
 
 
-            for h2 in self.soup.findAll("h2", {"class":"M_o7R"}):
+                for h2 in self.soup.findAll("h2", {"class":"M_o7R"}):
 
-                self.itemNames = []
-                self.itemPrices = []
+                    self.itemNames = []
+                    self.itemPrices = []
 
-                self.txtFile.write(h2.string + "\n")
-                self.txtFile.write("\n")
+                    self.txtFile.write(h2.string + "\n")
+                    self.txtFile.write("\n")
 
-                for h3 in h2.parent.findAll("h3", {"class":"styles_itemNameText__3bcKX"}):
-                    self.itemNames.append(h3.string)
-                
-                for span in h2.parent.findAll("span", {"class":"rupee"}):
-                    self.itemPrices.append(span.string)
-                
-                self.numCatItems = len(self.itemNames)
+                    for h3 in h2.parent.findAll("h3", {"class":"styles_itemNameText__3bcKX"}):
+                        self.itemNames.append(h3.string)
+                    
+                    for span in h2.parent.findAll("span", {"class":"rupee"}):
+                        self.itemPrices.append(span.string)
+                    
+                    self.numCatItems = len(self.itemNames)
 
-                for i in range(0, self.numCatItems):
-                    self.numSpaces = self.maxLimitOfLine - (len(self.itemNames[i]) + len(self.itemPrices[i]))
-                    self.toWrite =  self.itemNames[i] + chr(32) * self.numSpaces + self.itemPrices[i] + "\n"
-                    self.txtFile.write(self.toWrite)
-                    self.totalNumOfItems+=1
+                    for i in range(0, self.numCatItems):
+                        self.numSpaces = self.maxLimitOfLine - (len(self.itemNames[i]) + len(self.itemPrices[i]))
+                        self.toWrite =  self.itemNames[i] + chr(32) * self.numSpaces + self.itemPrices[i] + "\n"
+                        self.txtFile.write(self.toWrite)
+                        self.totalNumOfItems+=1
 
-                self.txtFile.write("\n")
+                    self.txtFile.write("\n")
 
-        self.txtFile.write(f"Total Number of Items: {self.totalNumOfItems}")
-        self.txtFile.close()
+            self.txtFile.write(f"Total Number of Items: {self.totalNumOfItems}")
+            self.txtFile.close()
 
-        print(f"Made {self.filename.rstrip('.html')+'.txt'} and appended items into it.")
+            print(f"Made {self.filename.rstrip('.html')+'.txt'} and appended items into it.")
+            return True
+        
+        except:
+            print(f"Error finding URL: {self.urlToRetrieve}, check if it is valid.")
+            return False
