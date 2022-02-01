@@ -179,3 +179,5 @@ class Data_Operations :
         conn.commit()
         conn.close()
 
+        return recieved_data
+
