@@ -1,6 +1,7 @@
 from Table_Generator import Table_Generator 
 
 from tkinter import *
+import consts as c
 
 table= Table_Generator()
 
@@ -8,7 +9,7 @@ table= Table_Generator()
 
 root = Tk()
 
-table1= table.get_contents_with_keyword(root,"menu1","chicken", display_category=TRUE)
+table1= table.get_all_contents(root,c.FILENAME, display_category=False)
 table1.pack()
 
 
