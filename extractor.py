@@ -40,7 +40,7 @@ class Extractor:
                     self.txtFile.write(h2.string + "\n")
                     self.txtFile.write("\n")
 
-                    for h3 in h2.parent.findAll("h3", {"class":"styles_itemNameText__3bcKX"}):
+                    for h3 in h2.parent.findAll("h3", {"class":"styles_itemNameText__3ZmZZ"}):
                         self.itemNames.append(h3.string)
                     
                     for span in h2.parent.findAll("span", {"class":"rupee"}):
