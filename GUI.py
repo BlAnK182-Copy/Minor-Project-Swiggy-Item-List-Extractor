@@ -14,21 +14,24 @@ class GUI:
         self.bgImageLabel=Label(self.window,image=self.bgImage)
         self.bgImageLabel.place(x=0,y=0)
 
-        self.greetingWidget=Label(self.window,text="Welcome to PESU Eateries!!")
-        self.greetingWidget.pack()
+        self.canvas=Canvas(self.window,height='350',width='700',bg='orange')
+        self.canvas.place(x=325,y=175)
 
-        self.titleWidget=Label(self.window,text='Enter the name of the restaurant below.')
-        self.titleWidget.pack()
+        self.greetingWidget=Label(self.window,text="Welcome to PESU Eateries!!",font="Calibri 24 bold",bg=None)
+        self.greetingWidget.place(x=475,y=190)
 
-        self.UrlEntryWidget=Entry(self.window,borderwidth='5')
-        self.UrlEntryWidget.pack()
+        self.titleWidget=Label(self.window,text='Enter the Swiggy-URL of the restaurant:',font='Courier 8')
+        self.titleWidget.place(x=330,y=250)
+
+        self.UrlEntryWidget=Entry(self.window,borderwidth='0')
+        self.UrlEntryWidget.place(x=625,y=250)
         
         self.restaurant_name=self.UrlEntryWidget.get()
 
-        
-        self.submitButton=Button(self.window,text="Submit",padx='50',fg='orange',bg='white',command=self.submitButtonClick)
+        self.submitButtonImage=PhotoImage(file='SubmitButton.png')
+        self.submitButton=Button(self.window,image=self.submitButtonImage,command=self.submitButtonClick,border=0)
         self.UrlEntryWidget.bind('<Return>',self.enterButton)
-        self.submitButton.pack()
+        self.submitButton.place(x=510,y=280)
 
         self.window.mainloop()
             
@@ -47,11 +50,9 @@ class GUI:
         extractProcess = self.extractorObj.extract()
 
         if extractProcess == True:
-            self.confirmationLabel=Label(self.window,text="Your response has been saved successfully.")
             self.sqlPushObject.createTable(c.FILENAME)
             self.sqlPushObject.add_items_to_table(c.FILENAME,c.FILENAME)
-            self.tableConfirmationLabel = Label(self.window, text="Table created and appended into")
-            self.tableConfirmationLabel.pack()
+
 
         else:
             self.confirmationLabel=Label(self.window,text="There was an error trying to access your url, please enter a valid url.")
