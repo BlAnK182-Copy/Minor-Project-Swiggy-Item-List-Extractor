@@ -8,6 +8,12 @@ class GUI:
 
         self.window=Tk()
 
+        self.window.geometry('1000x500')
+
+        self.bgImage=PhotoImage(file='bgImage1.png')
+        self.bgImageLabel=Label(self.window,image=self.bgImage)
+        self.bgImageLabel.place(x=0,y=0)
+
         self.greetingWidget=Label(self.window,text="Welcome to PESU Eateries!!")
         self.greetingWidget.pack()
 
