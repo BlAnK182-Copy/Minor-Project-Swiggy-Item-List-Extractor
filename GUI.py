@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import messagebox
 from extractor import Extractor
 import consts as c
 import pushToDB as ptd
@@ -52,12 +53,10 @@ class GUI:
         if extractProcess == True:
             self.sqlPushObject.createTable(c.FILENAME)
             self.sqlPushObject.add_items_to_table(c.FILENAME,c.FILENAME)
-
+            messagebox.showinfo("Notification!","Your response has been saved succesfully. Table created and appended into.")
 
         else:
-            self.confirmationLabel=Label(self.window,text="There was an error trying to access your url, please enter a valid url.")
-        
-        self.confirmationLabel.pack()
+            messagebox.showinfo("ERROR!!","There was an error trying to access your url, please enter a valid url.")
 
     def enterButton(self, event):
         self.submitButtonClick()
