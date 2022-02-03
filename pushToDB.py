@@ -12,15 +12,26 @@ class Data_Operations :
         conn = sqlite3.connect(self.db_name)
         Mycursor = conn.cursor()
 
-        Mycursor.execute(f"""CREATE TABLE {table_name}(
-            item_name varchar, 
-            price decimal(6,2),
-            category text, 
-            restraunt text    
-        )
-        """)
-        conn.commit()
-        conn.close()
+        try:
+            Mycursor.execute(f"""CREATE TABLE {table_name}(
+                item_name varchar, 
+                price decimal(6,2),
+                category text, 
+                restraunt text    
+            )
+            """)
+        except sqlite3.OperationalError as e:
+            print(e)
+
+            conn.commit()
+            conn.close()
+
+            return False
+        else:
+            conn.commit()
+            conn.close()
+
+            return True
 
     def add_items_to_table(self, table_name: str, filename: str):
         #adds data into the specified table from the specified textfile.

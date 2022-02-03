@@ -9,7 +9,7 @@ table= Table_Generator()
 
 root = Tk()
 
-table1= table.get_all_contents(root,c.FILENAME, display_category=False)
+table1= table.get_all_contents(root,c.FILENAME, display_category=True)
 table1.pack()
 
 
