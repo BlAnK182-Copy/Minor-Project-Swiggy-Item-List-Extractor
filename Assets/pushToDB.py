@@ -1,28 +1,43 @@
 import sqlite3
+import Assets.consts as c
 
 class Data_Operations :
+
+    def __init__(self):
+        self.db_name = c.DATABASE_NAME
 
     def createTable(self, table_name):
         #creates a table in the db with the given table name.
 
-        conn = sqlite3.connect("restraunt_items")
+        conn = sqlite3.connect(self.db_name)
         Mycursor = conn.cursor()
 
-        Mycursor.execute(f"""CREATE TABLE {table_name}(
-            item_name varchar, 
-            price decimal(6,2),
-            category text, 
-            restraunt text    
-        )
-        """)
-        conn.commit()
-        conn.close()
+        try:
+            Mycursor.execute(f"""CREATE TABLE {table_name}(
+                item_name varchar, 
+                price decimal(6,2),
+                category text, 
+                restraunt text    
+            )
+            """)
+        except sqlite3.OperationalError as e:
+            print(e)
+
+            conn.commit()
+            conn.close()
+
+            return False
+        else:
+            conn.commit()
+            conn.close()
+
+            return True
 
     def add_items_to_table(self, table_name: str, filename: str):
         #adds data into the specified table from the specified textfile.
         # name of textfile SHOULD NOT HAVE AN EXTENSION.
 
-        conn = sqlite3.connect("restraunt_items")
+        conn = sqlite3.connect(self.db_name)
         Mycursor = conn.cursor()
 
         datafile = open(filename+".txt", "r")
@@ -77,7 +92,7 @@ class Data_Operations :
     def delete_table(self, table_name):
         #d
 
-        conn = sqlite3.connect("restraunt_items")
+        conn = sqlite3.connect(self.db_name)
         Mycursor = conn.cursor()
 
         Mycursor.execute(f"DROP TABLE {table_name}")
@@ -90,7 +105,7 @@ class Data_Operations :
     def get_all_contents(self, table_name: str):
         # This function returns a list containing tuples, each tuple contianing one record.
 
-        conn = sqlite3.connect("restraunt_items")
+        conn = sqlite3.connect(self.db_name)
         Mycursor = conn.cursor()
 
         Mycursor.execute(f"""SELECT * FROM {table_name}
@@ -109,7 +124,7 @@ class Data_Operations :
     def get_categories(self, table_name: str):
         # returns a list of all the categories in this table.
 
-        conn = sqlite3.connect("restraunt_items")
+        conn = sqlite3.connect(self.db_name)
         Mycursor = conn.cursor()
 
         Mycursor.execute(f""" SELECT DISTINCT category FROM {table_name}
@@ -128,7 +143,7 @@ class Data_Operations :
         #Only records of the mentioned category will be returned
         # returns a list containing tuples with each tuple containg a record. 
 
-        conn = sqlite3.connect("restraunt_items")
+        conn = sqlite3.connect(self.db_name)
         Mycursor = conn.cursor()
         
         Mycursor.execute(f"""SELECT * from {table_name} where category = '{category_name}'
@@ -147,7 +162,7 @@ class Data_Operations :
         #Only records within the price limmit (inclusive of both limits) will be returned.
         # returns a list containing tuples with each tuple containg a record. 
 
-        conn = sqlite3.connect("restraunt_items")
+        conn = sqlite3.connect(self.db_name)
         Mycursor = conn.cursor()
 
         Mycursor.execute(f"""SELECT * from {table_name} WHERE price <= {upperlimit} and price >= {lower_limit} and category !='Recommended'
@@ -166,7 +181,7 @@ class Data_Operations :
         #Returns all records where the item has the keyword in it.
         #Returns a list of tuples where each tuple is a record.
 
-        conn = sqlite3.connect("restraunt_items")
+        conn = sqlite3.connect(self.db_name)
         Mycursor = conn.cursor()
 
         Mycursor.execute(f"""SELECT * from {table_name} WHERE item_name LIKE '%{keyword}%' and category != 'Recommended'
@@ -178,4 +193,6 @@ class Data_Operations :
 
         conn.commit()
         conn.close()
+
+        return recieved_data
 
