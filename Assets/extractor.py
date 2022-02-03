@@ -2,6 +2,7 @@
 
 import urllib.request
 import os
+import Assets.consts as c
 
 #installing bs4 if not present
 os.system("pip install bs4")
@@ -11,7 +12,11 @@ class Extractor:
 
     def __init__(self, restUrl, filename, maxLineLimit):
 
-        self.dirPath = __file__.rstrip(os.path.basename(__file__))
+        if c.FILE_DIR_NAME.lower() not in [i.lower() for i in os.listdir(c.OUTER_FOLDER)]:
+            os.mkdir(c.FILE_STORAGE)
+
+        self.dirPath = c.FILE_STORAGE
+        print(self.dirPath)
         self.filename = filename + ".html"
         self.filePath = self.dirPath+self.filename
         self.urlToRetrieve = restUrl
@@ -30,8 +35,8 @@ class Extractor:
             #retrieving prices and items
             with open(self.filePath) as fileParser:
                 self.soup = BeautifulSoup(fileParser, "html.parser")
-
-
+        
+        
                 for h2 in self.soup.findAll("h2", {"class":"M_o7R"}):
 
                     self.itemNames = []
@@ -60,6 +65,7 @@ class Extractor:
             self.txtFile.close()
 
             print(f"Made {self.filename.rstrip('.html')+'.txt'} and appended items into it.")
+            os.remove(self.filePath)
             return True
         
         except:

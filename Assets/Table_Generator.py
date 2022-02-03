@@ -1,5 +1,5 @@
 from tkinter import*
-from pushToDB import Data_Operations
+from Assets.pushToDB import Data_Operations
 
 
 try:

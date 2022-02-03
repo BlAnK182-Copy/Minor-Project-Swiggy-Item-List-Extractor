@@ -1,5 +1,5 @@
 import sqlite3
-import consts as c
+import Assets.consts as c
 
 class Data_Operations :
 

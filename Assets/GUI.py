@@ -1,8 +1,9 @@
 from tkinter import *
 from tkinter import messagebox
-from extractor import Extractor
-import consts as c
-import pushToDB as ptd
+from Assets.extractor import Extractor
+import Assets.consts as c
+import Assets.pushToDB as ptd
+from Assets.Table_Generator import Table_Generator
 
 class GUI:
     def __init__(self):
@@ -11,7 +12,7 @@ class GUI:
 
         self.window.geometry('1000x500')
 
-        self.bgImage=PhotoImage(file='bgImage1.png')
+        self.bgImage=PhotoImage(file=c.BG_IMAGE_PATH)
         self.bgImageLabel=Label(self.window,image=self.bgImage)
         self.bgImageLabel.place(x=0,y=0)
 
@@ -29,7 +30,7 @@ class GUI:
         
         self.restaurant_name=self.UrlEntryWidget.get()
 
-        self.submitButtonImage=PhotoImage(file='SubmitButton.png')
+        self.submitButtonImage=PhotoImage(file=c.BUTTON_IMAGE_PATH)
         self.submitButton=Button(self.window,image=self.submitButtonImage,command=self.submitButtonClick,border=0)
         self.UrlEntryWidget.bind('<Return>',self.enterButton)
         self.submitButton.place(x=510,y=280)
@@ -51,9 +52,17 @@ class GUI:
         extractProcess = self.extractorObj.extract()
 
         if extractProcess == True:
-            self.sqlPushObject.createTable(c.FILENAME)
-            self.sqlPushObject.add_items_to_table(c.FILENAME,c.FILENAME)
-            messagebox.showinfo("Notification!","Your response has been saved succesfully. Table created and appended into.")
+            tableCreated = self.sqlPushObject.createTable(c.FILENAME)
+            if tableCreated:
+                self.sqlPushObject.add_items_to_table(c.FILENAME,c.FILE_STORAGE + c.FILENAME)
+            messagebox.showinfo("Notification!",f"Your response has been saved succesfully into {c.FILENAME}.txt. Table created and appended into.")
+
+            #temporaily calling a tksheet
+            self.table = Table_Generator()
+            root = Tk()
+            table1= self.table.get_all_contents(root,c.FILENAME, display_category=True)
+            table1.pack()
+
 
         else:
             messagebox.showinfo("ERROR!!","There was an error trying to access your url, please enter a valid url.")
