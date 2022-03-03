@@ -5,8 +5,12 @@ import os
 import Assets.consts as c
 
 #installing bs4 if not present
-os.system("pip install bs4")
-from bs4 import BeautifulSoup
+try:
+    from bs4 import BeautifulSoup
+
+except ModuleNotFoundError:
+    os.system("pip install bs4")
+    from bs4 import BeautifulSoup
 
 class Extractor:
 
@@ -68,6 +72,6 @@ class Extractor:
             os.remove(self.filePath)
             return True
         
-        except:
-            print(f"Error finding URL: {self.urlToRetrieve}, check if it is valid.")
+        except Exception as e:
+            print(f"Error finding URL: {self.urlToRetrieve}, check if it is valid. Erro: {e}")
             return False

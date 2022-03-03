@@ -1,7 +1,6 @@
 from tkinter import*
 from Assets.pushToDB import Data_Operations
 
-
 try:
     import tksheet
 except ModuleNotFoundError:
