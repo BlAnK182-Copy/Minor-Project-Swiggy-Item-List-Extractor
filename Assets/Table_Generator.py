@@ -1,16 +1,16 @@
 from tkinter import*
 from Assets.pushToDB import Data_Operations
 
+try:
+    import tksheet
+except ModuleNotFoundError:
+    import os
+    os.system("pip install tksheet")
+    import tksheet
+
 class Table_Generator:
 
     def __init__(self):
-        try:
-            import tksheet
-        except ModuleNotFoundError:
-            import os
-            os.system("pip install tksheet")
-            import tksheet
-            
         self.db = Data_Operations()
         
     def remove_res_name(self, data: list):

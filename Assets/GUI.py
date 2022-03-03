@@ -70,7 +70,7 @@ class GUI:
             #temporaily calling a tksheet
             self.table = Table_Generator()
             root = Tk()
-            table1= self.table.get_all_contents(root,c.FILENAME, display_categorcolumn=True)
+            table1= self.table.get_all_contents(root,c.FILENAME, display_category=True)
             table1.pack()
 
 
