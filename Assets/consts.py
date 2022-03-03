@@ -11,3 +11,7 @@ FILE_STORAGE = OUTER_FOLDER + "\\" + FILE_DIR_NAME + "\\"
 #GUI Constants
 BG_IMAGE_PATH = __file__.rstrip(os.path.basename(__file__)) + "\\Images\\bgImage1.png"
 BUTTON_IMAGE_PATH = __file__.rstrip(os.path.basename(__file__)) + "\\Images\\SubmitButton.png"
+WINDOW_HEIGHT = 700
+WINDOW_WIDTH = 1400
+X_PADDING = 75
+Y_PADDING = 50

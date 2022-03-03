@@ -4,13 +4,16 @@ import urllib.request
 import os
 import Assets.consts as c
 
-#installing bs4 if not present
-os.system("pip install bs4")
-from bs4 import BeautifulSoup
-
 class Extractor:
 
     def __init__(self, restUrl, filename, maxLineLimit):
+        #installing bs4 if not present
+        try:
+            from bs4 import BeautifulSoup
+
+        except ModuleNotFoundError:
+            os.system("pip install bs4")
+            from bs4 import BeautifulSoup
 
         if c.FILE_DIR_NAME.lower() not in [i.lower() for i in os.listdir(c.OUTER_FOLDER)]:
             os.mkdir(c.FILE_STORAGE)
