@@ -1,6 +1,11 @@
-from socket import timeout
-from time import time
-import requests
+import os
+
+try:
+    import requests
+except ModuleNotFoundError:
+    os.system("pip install requests")
+    import requests
+
 
 class Connect:
     def __init__(self) -> None:
